@@ -1,6 +1,6 @@
 let earthquakes;
 let url = 'https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_month.csv'
-
+let logger = document.getElementById('log');
 
 var promiseR = fetch(url).then(function (response) {
     return response.ok ? response.text() : Promise.reject(response.status);
@@ -27,6 +27,7 @@ initMap = async () => {
 
         for (var i = 1; i < 500; i++) {
             var data = earthquakes[i];
+
             mag = parseFloat(data.mag);
             latitude = parseFloat(data.latitude);
             longitude = parseFloat(data.longitude);
@@ -47,7 +48,13 @@ initMap = async () => {
             });
 
             if (cityCircle.radius > 100000) {
-
+                // bigger than level 6
+                var marker = new google.maps.Marker({
+                    position: center,
+                    label: data.mag
+                });
+                console.log(data.place)
+                logger.innerHTML += data.place + '<br />';
 
             }
         }
